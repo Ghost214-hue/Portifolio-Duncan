@@ -99,17 +99,36 @@ const Contact = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     setStatus('sending');
+    
     try {
-      const body    = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`);
+      // Build the mailto URL
       const subject = encodeURIComponent(form.subject || 'Portfolio Contact');
-      window.location.href = `mailto:karenjuduncan750@gmail.com?subject=${subject}&body=${body}`;
-      await new Promise(r => setTimeout(r, 1200));
-      setStatus('success');
-      setForm({ name:'', email:'', subject:'', message:'' });
-      setTimeout(() => setStatus('idle'), 6000);
+      const body = encodeURIComponent(
+        `Name: ${form.name}\n` +
+        `Email: ${form.email}\n\n` +
+        `${form.message}`
+      );
+      const mailtoUrl = `mailto:karenjuduncan750@gmail.com?subject=${subject}&body=${body}`;
+      
+      // Open the mail client
+      window.location.href = mailtoUrl;
+      
+      // Show a message that the mail client should open
+      setStatus('mailto_opened');
+      
+      // Reset status after 5 seconds, but DO NOT clear the form
+      // The user might want to copy their message if mail client fails
+      setTimeout(() => {
+        setStatus('idle');
+      }, 5000);
+      
     } catch (err) {
+      // This catch block is mostly for completeness - mailto rarely throws
+      console.error('Error opening mail client:', err);
       setStatus('error');
-      setTimeout(() => setStatus('idle'), 5000);
+      setTimeout(() => {
+        setStatus('idle');
+      }, 5000);
     }
   };
 
@@ -227,6 +246,13 @@ const Contact = () => {
         .toast-success {
           background: rgba(34,197,94,0.09); border: 1px solid rgba(34,197,94,0.28);
           color: #15803d; border-radius: 12px; padding: 13px 16px;
+          font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: center;
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+          animation: fadeUp 0.4s ease;
+        }
+        .toast-mailto {
+          background: rgba(14,165,233,0.09); border: 1px solid rgba(14,165,233,0.28);
+          color: #0284c7; border-radius: 12px; padding: 13px 16px;
           font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: center;
           box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
           animation: fadeUp 0.4s ease;
@@ -467,11 +493,8 @@ const Contact = () => {
 
               {/* Tip banner */}
               <div className="tip-banner">
-                💡 <span style={{ color:'#0284c7', fontWeight:600 }}>Tip:</span> For live email delivery, add your{' '}
-                <a href="https://emailjs.com" target="_blank" rel="noopener noreferrer"
-                  style={{ color:'#0284c7', textDecoration:'underline' }}>EmailJS</a> keys in the{' '}
-                <code style={{ color:'#6366f1', margin:'0 3px', fontWeight:600 }}>handleSubmit</code> function.
-                Currently uses your default mail client as fallback.
+                💡 <span style={{ color:'#0284c7', fontWeight:600 }}>Tip:</span> This opens your default mail client. 
+                Your message won't be cleared automatically — you can copy it if needed.
               </div>
 
               <form onSubmit={handleSubmit} style={{ display:'flex', flexDirection:'column', gap:16 }}>
@@ -539,11 +562,11 @@ const Contact = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                           d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                       </svg>
-                      Sending…
+                      Opening Mail Client...
                     </>
                   ) : (
                     <>
-                      Send Message
+                      Compose Email
                       <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                           d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -552,14 +575,14 @@ const Contact = () => {
                   )}
                 </button>
 
-                {status === 'success' && (
-                  <div className="toast-success">
-                    ✅ Your mail client should open shortly. Thanks for reaching out!
+                {status === 'mailto_opened' && (
+                  <div className="toast-mailto">
+                    📧 Your mail client should open now. The form data has been preserved in case you need to copy anything.
                   </div>
                 )}
                 {status === 'error' && (
                   <div className="toast-error">
-                    ❌ Something went wrong. Please email me directly at karenjuduncan750@gmail.com
+                    ❌ Unable to open mail client. Please email me directly at karenjuduncan750@gmail.com
                   </div>
                 )}
               </form>

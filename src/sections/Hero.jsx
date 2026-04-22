@@ -1,5 +1,6 @@
 // components/HomePage.jsx
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import port from '../assets/port.jpeg';
 
 /* ─────────────────────────────────────────────────────────────
    CODE RAIN CANVAS
@@ -437,7 +438,7 @@ const Hero = () => {
                 {/* Photo */}
                 <div className="photo-frame w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden relative">
                   <img
-                    src="/src/assets/port.jpeg"
+                    src={port}
                     alt="Karenju Duncan — Full-Stack Developer"
                     className="w-full h-full object-cover"
                     style={{ objectPosition:'center 20%' }}
