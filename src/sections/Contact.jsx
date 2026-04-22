@@ -29,7 +29,7 @@ const contactItems = [
     label: "Location",
     value: "Muranga, Kenya",
     href: null,
-    accent: "#00d8ff",
+    accent: "#0ea5e9",
   },
   {
     icon: (
@@ -41,7 +41,7 @@ const contactItems = [
     label: "Email",
     value: "karenjuduncan750@gmail.com",
     href: "mailto:karenjuduncan750@gmail.com",
-    accent: "#a855f7",
+    accent: "#6366f1",
   },
   {
     icon: (
@@ -64,7 +64,7 @@ const contactItems = [
     label: "GitHub",
     value: "github.com/Ghost214-hue",
     href: "https://github.com/Ghost214-hue",
-    accent: "#f1f5f9",
+    accent: "#334155",
   },
   {
     icon: (
@@ -80,345 +80,381 @@ const contactItems = [
 ];
 
 /* ─── Hex → RGB helper ─────────────────────────────────────── */
-function rgb(hex) {
+function toRgb(hex) {
   const r = parseInt(hex.slice(1,3),16);
   const g = parseInt(hex.slice(3,5),16);
   const b = parseInt(hex.slice(5,7),16);
   return `${r},${g},${b}`;
 }
 
-/* ─── Input component ──────────────────────────────────────── */
-const Field = ({ label, id, required, children }) => (
-  <div>
-    <label htmlFor={id} style={{
-      display:'block', fontFamily:"'JetBrains Mono',monospace",
-      fontSize:10, letterSpacing:'0.12em', color:'#64748b',
-      textTransform:'uppercase', marginBottom:8,
-    }}>
-      {label}{required && <span style={{ color:'#00d8ff', marginLeft:3 }}>*</span>}
-    </label>
-    {children}
-  </div>
-);
-
-const inputStyle = {
-  width:'100%', padding:'12px 16px', borderRadius:12,
-  background:'rgba(255,255,255,0.03)',
-  border:'1px solid rgba(255,255,255,0.08)',
-  backdropFilter:'blur(12px)',
-  color:'#f1f5f9', fontSize:14, outline:'none',
-  fontFamily:"'JetBrains Mono',monospace",
-  boxSizing:'border-box',
-  transition:'border-color 0.25s ease, box-shadow 0.25s ease',
-};
-
 /* ─── Main Component ─────────────────────────────────────────── */
 const Contact = () => {
   const [sectionRef, visible] = useVisible();
-  const [form, setForm]   = useState({ name:'', email:'', subject:'', message:'' });
-  const [status, setStatus] = useState('idle'); // idle | sending | success | error
+  const [form, setForm]       = useState({ name:'', email:'', subject:'', message:'' });
+  const [status, setStatus]   = useState('idle');
   const [focused, setFocused] = useState(null);
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
-  /* ── Form submit via mailto fallback (no backend needed) ── */
   const handleSubmit = async e => {
     e.preventDefault();
     setStatus('sending');
-
     try {
-      /* ── Option A: EmailJS (recommended — add your IDs below) ──
-         Install: npm install @emailjs/browser
-         Then uncomment the block below and fill in your IDs from emailjs.com
-
-      import emailjs from '@emailjs/browser';
-      await emailjs.send(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
-        { from_name: form.name, from_email: form.email, subject: form.subject, message: form.message },
-        'YOUR_PUBLIC_KEY'
-      );
-      setStatus('success');
-      setForm({ name:'', email:'', subject:'', message:'' });
-      ── End Option A ── */
-
-      /* ── Option B: mailto fallback (works without a backend) ── */
-      const body = encodeURIComponent(
-        `Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`
-      );
+      const body    = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`);
       const subject = encodeURIComponent(form.subject || 'Portfolio Contact');
       window.location.href = `mailto:karenjuduncan750@gmail.com?subject=${subject}&body=${body}`;
-
-      // Short delay so the OS mail client opens, then show success
       await new Promise(r => setTimeout(r, 1200));
       setStatus('success');
       setForm({ name:'', email:'', subject:'', message:'' });
       setTimeout(() => setStatus('idle'), 6000);
-
     } catch (err) {
-      console.error('Send error:', err);
       setStatus('error');
       setTimeout(() => setStatus('idle'), 5000);
     }
   };
 
-  const focusStyle = (field) => focused === field
-    ? { ...inputStyle, borderColor:'rgba(0,216,255,0.45)', boxShadow:'0 0 0 3px rgba(0,216,255,0.08)' }
-    : inputStyle;
+  /* ── Input style helpers ── */
+  const baseInput = {
+    width: '100%', padding: '12px 16px', borderRadius: 12,
+    background: 'rgba(255,255,255,0.60)',
+    border: '1px solid rgba(200,220,255,0.60)',
+    backdropFilter: 'blur(14px)',
+    color: '#0f172a', fontSize: 14, outline: 'none',
+    fontFamily: "'JetBrains Mono',monospace",
+    boxSizing: 'border-box',
+    transition: 'border-color 0.25s ease, box-shadow 0.25s ease',
+    boxShadow: 'inset 0 1px 0 rgba(255,255,255,1)',
+  };
+  const focusInput = {
+    ...baseInput,
+    borderColor: 'rgba(14,165,233,0.55)',
+    boxShadow: '0 0 0 3px rgba(14,165,233,0.10), inset 0 1px 0 rgba(255,255,255,1)',
+    background: 'rgba(255,255,255,0.80)',
+  };
+  const fieldStyle = f => focused === f ? focusInput : baseInput;
 
   return (
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-        /* ── Base glass card ── */
+        /* ── Section bg ── */
+        .contact-bg {
+          width: 100%;
+          background:
+            radial-gradient(ellipse 65% 50% at 8%  20%, rgba(186,230,255,0.42) 0%, transparent 60%),
+            radial-gradient(ellipse 55% 45% at 92% 80%, rgba(199,210,254,0.36) 0%, transparent 60%),
+            linear-gradient(160deg, #f0f8ff 0%, #eef2ff 50%, #f8fafc 100%);
+        }
+
+        /* ── Dot grid ── */
+        .contact-dot-grid {
+          background-image: radial-gradient(rgba(14,165,233,0.10) 1.5px, transparent 1.5px);
+          background-size: 28px 28px;
+        }
+
+        /* ── Glass card ── */
         .ct-card {
-          background: rgba(255,255,255,0.025);
-          border: 1px solid rgba(255,255,255,0.07);
-          backdrop-filter: blur(24px) saturate(160%);
-          -webkit-backdrop-filter: blur(24px) saturate(160%);
-          box-shadow: 0 20px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.05);
+          background: rgba(255,255,255,0.52);
+          border: 1px solid rgba(255,255,255,0.90);
+          backdrop-filter: blur(28px) saturate(180%);
+          -webkit-backdrop-filter: blur(28px) saturate(180%);
+          box-shadow:
+            0 16px 48px rgba(100,130,200,0.12),
+            0 4px 12px rgba(100,130,200,0.07),
+            inset 0 2px 0 rgba(255,255,255,1),
+            inset 0 -1px 0 rgba(180,210,255,0.25);
           border-radius: 20px;
         }
 
         /* ── Contact item row ── */
         .ct-item {
           display: flex; align-items: center; gap: 14px;
-          padding: 14px 16px; border-radius: 14px;
-          background: rgba(255,255,255,0.02);
-          border: 1px solid rgba(255,255,255,0.06);
-          backdrop-filter: blur(10px);
+          padding: 13px 15px; border-radius: 14px;
+          background: rgba(255,255,255,0.55);
+          border: 1px solid rgba(200,220,255,0.55);
+          backdrop-filter: blur(12px);
+          box-shadow: inset 0 1px 0 rgba(255,255,255,1);
           transition: all 0.25s ease; cursor: default;
-          text-decoration: none;
+          text-decoration: none; color: inherit;
         }
         .ct-item:hover {
-          background: rgba(0,216,255,0.05);
-          border-color: rgba(0,216,255,0.22);
-          transform: translateX(4px);
-          box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+          background: rgba(255,255,255,0.82);
+          border-color: rgba(14,165,233,0.38);
+          transform: translateX(5px);
+          box-shadow: 0 8px 24px rgba(14,165,233,0.12), inset 0 1px 0 rgba(255,255,255,1);
         }
 
-        /* ── Social pill ── */
-        .social-pill {
+        /* ── Availability badge ── */
+        .avail-badge {
+          background: rgba(34,197,94,0.09);
+          border: 1px solid rgba(34,197,94,0.28);
+          backdrop-filter: blur(14px);
+          border-radius: 99px; padding: 9px 22px;
           display: inline-flex; align-items: center; gap: 8px;
-          padding: 9px 18px; border-radius: 99px;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.08);
-          backdrop-filter: blur(12px);
-          font-family: 'JetBrains Mono', monospace; font-size: 11px;
-          color: #64748b; text-decoration: none;
-          transition: all 0.25s ease;
-        }
-        .social-pill:hover {
-          color: #00d8ff; border-color: rgba(0,216,255,0.30);
-          background: rgba(0,216,255,0.06);
-          box-shadow: 0 0 18px rgba(0,216,255,0.12);
-          transform: translateY(-2px);
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
         }
 
         /* ── Submit button ── */
         .submit-btn {
-          width: 100%; padding: 13px 0; border-radius: 12px; border: none; cursor: pointer;
-          font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
-          letter-spacing: 0.08em;
-          background: linear-gradient(135deg, rgba(0,216,255,0.85), rgba(0,160,210,0.9));
-          color: #060a0f;
-          border: 1px solid rgba(0,216,255,0.60);
-          box-shadow: 0 0 28px rgba(0,216,255,0.30), inset 0 1px 0 rgba(255,255,255,0.20);
-          transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px;
+          width: 100%; padding: 14px 0; border-radius: 12px; border: none; cursor: pointer;
+          font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700;
+          letter-spacing: 0.07em;
+          background: linear-gradient(135deg, #0ea5e9, #0284c7);
+          color: #fff;
+          border: 1px solid rgba(14,165,233,0.60);
+          box-shadow: 0 8px 28px rgba(14,165,233,0.30), inset 0 1px 0 rgba(255,255,255,0.25);
+          transition: all 0.3s ease;
+          display: flex; align-items: center; justify-content: center; gap: 8px;
         }
         .submit-btn:hover:not(:disabled) {
-          box-shadow: 0 0 44px rgba(0,216,255,0.50), 0 0 80px rgba(0,216,255,0.18);
+          background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+          box-shadow: 0 12px 40px rgba(14,165,233,0.45), inset 0 1px 0 rgba(255,255,255,0.30);
           transform: translateY(-2px);
         }
         .submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
 
-        /* ── Availability badge ── */
-        .avail-badge {
-          background: rgba(34,197,94,0.08);
-          border: 1px solid rgba(34,197,94,0.22);
-          backdrop-filter: blur(14px);
-          border-radius: 99px; padding: 8px 20px;
-          display: inline-flex; align-items: center; gap: 8px;
+        /* ── Section label ── */
+        .sec-label {
+          font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em;
+          color: #0284c7; text-transform: uppercase; font-weight: 600;
+          display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+        }
+        .sec-label::before { content:''; flex:1; height:1px; background: linear-gradient(to right, rgba(14,165,233,0.35), transparent); }
+        .sec-label::after  { content:''; flex:1; height:1px; background: linear-gradient(to left,  rgba(14,165,233,0.35), transparent); }
+
+        /* ── Toasts ── */
+        .toast-success {
+          background: rgba(34,197,94,0.09); border: 1px solid rgba(34,197,94,0.28);
+          color: #15803d; border-radius: 12px; padding: 13px 16px;
+          font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: center;
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+          animation: fadeUp 0.4s ease;
+        }
+        .toast-error {
+          background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25);
+          color: #b91c1c; border-radius: 12px; padding: 13px 16px;
+          font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: center;
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+          animation: fadeUp 0.4s ease;
+        }
+
+        /* ── Tip banner ── */
+        .tip-banner {
+          background: rgba(14,165,233,0.07);
+          border: 1px solid rgba(14,165,233,0.20);
+          border-radius: 10px; padding: 10px 14px; margin-bottom: 20px;
+          font-family: 'JetBrains Mono', monospace; font-size: 11px;
+          color: #475569; line-height: 1.7;
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+        }
+
+        /* ── Field label ── */
+        .field-label {
+          display: block;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 11px; letter-spacing: 0.10em;
+          color: #64748b; font-weight: 600;
+          text-transform: uppercase; margin-bottom: 7px;
         }
 
         /* ── Animations ── */
         @keyframes fadeUp {
-          from { opacity:0; transform:translateY(28px); }
+          from { opacity:0; transform:translateY(20px); }
           to   { opacity:1; transform:translateY(0); }
         }
-        .fu { opacity:0; }
-        .fu.in { animation: fadeUp 0.6s ease forwards; }
+        .fu     { opacity:0; }
+        .fu.in  { animation: fadeUp 0.6s ease forwards; }
 
-        @keyframes spinOnce {
-          from { transform: rotate(0deg); }
-          to   { transform: rotate(360deg); }
-        }
+        @keyframes spinOnce { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
         .spin { animation: spinOnce 0.8s linear infinite; }
 
-        /* ── Success / error toast ── */
-        .toast-success {
-          background: rgba(34,197,94,0.10); border: 1px solid rgba(34,197,94,0.28);
-          color: #4ade80; border-radius: 12px; padding: 12px 16px;
-          font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: center;
-          animation: fadeUp 0.4s ease;
+        @keyframes shimmer {
+          0%   { background-position: -200% center; }
+          100% { background-position:  200% center; }
         }
-        .toast-error {
-          background: rgba(239,68,68,0.10); border: 1px solid rgba(239,68,68,0.28);
-          color: #f87171; border-radius: 12px; padding: 12px 16px;
-          font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: center;
-          animation: fadeUp 0.4s ease;
+        .shimmer-heading {
+          background: linear-gradient(90deg, #0f172a 15%, #0ea5e9 50%, #0f172a 85%);
+          background-size: 300% auto;
+          -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+          animation: shimmer 6s linear infinite;
         }
-
-        /* ── Section label ── */
-        .sec-label {
-          font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em;
-          color: #00d8ff; text-transform: uppercase;
-          display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
-        }
-        .sec-label::before, .sec-label::after {
-          content:''; flex:1; height:1px;
-          background: linear-gradient(to right, rgba(0,216,255,0.30), transparent);
-        }
-        .sec-label::after { background: linear-gradient(to left, rgba(0,216,255,0.30), transparent); }
 
         /* ── Footer ── */
         .footer-bar {
-          border-top: 1px solid rgba(255,255,255,0.06);
+          border-top: 1px solid rgba(200,220,255,0.40);
           margin-top: 56px; padding-top: 28px; text-align: center;
-          font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #334155;
+          font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #64748b;
         }
-        .footer-bar span { color: #00d8ff; }
+        .footer-bar .accent { color: #0284c7; font-weight: 600; }
+        .footer-link {
+          color: #64748b; text-decoration: none; transition: color 0.2s;
+        }
+        .footer-link:hover { color: #0284c7; }
+
+        /* ── FULL WIDTH container (no max-width restriction) ── */
+        .contact-container-full {
+          width: 100%;
+          padding: 0 5%;
+        }
+        @media (max-width: 768px) {
+          .contact-container-full {
+            padding: 0 4%;
+          }
+        }
+        @media (max-width: 480px) {
+          .contact-container-full {
+            padding: 0 5%;
+          }
+        }
+        @media (min-width: 1920px) {
+          .contact-container-full {
+            padding: 0 8%;
+          }
+        }
+
+        /* ── Grid responsiveness ── */
+        .contact-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+          gap: 1.25rem;
+        }
+
+        /* ── Form row responsiveness ── */
+        .form-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.875rem;
+        }
+        @media (max-width: 560px) {
+          .form-row {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+        }
       `}</style>
 
       <section
         id="contact"
         ref={sectionRef}
-        style={{ background:'#060a0f', fontFamily:"'Syne',sans-serif", position:'relative', overflowX:'hidden' }}
-        className="py-24 md:py-32"
+        className="contact-bg relative py-24 md:py-32 overflow-x-hidden"
+        style={{ fontFamily:"'Syne',sans-serif" }}
       >
-        {/* ── Ambient blobs ── */}
-        <div className="absolute inset-0 pointer-events-none z-0">
-          <div style={{ position:'absolute', top:'15%', left:'8%', width:500, height:500, borderRadius:'50%',
-            background:'radial-gradient(circle, rgba(0,216,255,0.07) 0%, transparent 70%)', filter:'blur(80px)',
-            animation:'pulse 8s ease-in-out infinite' }} />
-          <div style={{ position:'absolute', bottom:'10%', right:'6%', width:440, height:440, borderRadius:'50%',
-            background:'radial-gradient(circle, rgba(168,85,247,0.07) 0%, transparent 70%)', filter:'blur(80px)',
-            animation:'pulse 10s ease-in-out infinite 3s' }} />
-          <div style={{ position:'absolute', inset:0,
-            backgroundImage:'radial-gradient(rgba(0,216,255,0.035) 1px, transparent 1px)',
-            backgroundSize:'32px 32px' }} />
+        {/* Dot grid */}
+        <div className="contact-dot-grid absolute inset-0 z-0 pointer-events-none opacity-60" />
+
+        {/* Ambient blobs */}
+        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+          <div style={{ position:'absolute', top:'12%', left:'5%', width:520, height:520, borderRadius:'50%',
+            background:'radial-gradient(circle, rgba(186,230,255,0.50) 0%, transparent 70%)', filter:'blur(80px)' }} />
+          <div style={{ position:'absolute', bottom:'8%', right:'4%', width:460, height:460, borderRadius:'50%',
+            background:'radial-gradient(circle, rgba(199,210,254,0.45) 0%, transparent 70%)', filter:'blur(80px)' }} />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10">
+        {/* FULL WIDTH container - no max-width restriction! */}
+        <div className="relative z-10 contact-container-full">
 
           {/* ── Header ── */}
           <div className={`text-center mb-14 fu ${visible ? 'in' : ''}`}>
             <div style={{
               display:'inline-flex', alignItems:'center', gap:8,
-              background:'rgba(0,216,255,0.07)', border:'1px solid rgba(0,216,255,0.18)',
-              backdropFilter:'blur(14px)', borderRadius:99, padding:'6px 20px', marginBottom:20,
+              background:'rgba(255,255,255,0.65)',
+              border:'1px solid rgba(14,165,233,0.28)',
+              backdropFilter:'blur(16px)', borderRadius:99, padding:'7px 22px', marginBottom:20,
+              boxShadow:'0 4px 16px rgba(14,165,233,0.10), inset 0 1px 0 rgba(255,255,255,1)',
             }}>
-              <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10, letterSpacing:'0.15em', color:'#00d8ff' }}>
+              <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, letterSpacing:'0.15em', color:'#0284c7', fontWeight:600 }}>
                 GET IN TOUCH
               </span>
             </div>
-            <h2 style={{
-              fontWeight:800, fontSize:'clamp(2.2rem,5vw,3.6rem)', lineHeight:1.05,
-              background:'linear-gradient(90deg, #f1f5f9 15%, #00d8ff 50%, #f1f5f9 85%)',
-              WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text',
-              marginBottom:12,
-            }}>
+            <h2 className="shimmer-heading"
+              style={{ fontWeight:800, fontSize:'clamp(2rem,5vw,3.6rem)', lineHeight:1.05, marginBottom:12 }}>
               Let's Connect
             </h2>
-            <p style={{ color:'#475569', fontSize:13, fontFamily:"'JetBrains Mono',monospace",
-              maxWidth:440, margin:'0 auto 16px', lineHeight:1.8 }}>
+            <p style={{ color:'#475569', fontSize:15, fontFamily:"'JetBrains Mono',monospace",
+              maxWidth:460, margin:'0 auto 16px', lineHeight:1.8 }}>
               Open to internships, freelance work and collaborations — let's build something great.
             </p>
             <div style={{ width:64, height:3, borderRadius:99, margin:'0 auto',
-              background:'linear-gradient(90deg,#00d8ff,#a855f7)' }} />
+              background:'linear-gradient(90deg,#0ea5e9,#6366f1)' }} />
           </div>
 
-          {/* ── Two-column layout ── */}
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(min(100%,420px),1fr))', gap:20 }}>
+          {/* ── Two-column layout (full width) ── */}
+          <div className="contact-grid">
 
             {/* ── LEFT: Info panel ── */}
             <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
 
               {/* Contact card */}
-              <div className={`ct-card p-7 fu ${visible ? 'in' : ''}`} style={{ animationDelay:'0.1s' }}>
+              <div className={`ct-card p-7 fu ${visible ? 'in' : ''}`} style={{ animationDelay:'0.10s' }}>
                 <div className="sec-label">Contact Details</div>
-                <p style={{ color:'#64748b', fontSize:13, lineHeight:1.8,
+                <p style={{ color:'#475569', fontSize:14, lineHeight:1.85,
                   fontFamily:"'JetBrains Mono',monospace", marginBottom:20 }}>
                   Always excited to connect with fellow developers, potential collaborators and anyone passionate about tech. Reach out through any channel below.
                 </p>
 
-                <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-                  {contactItems.map((item, i) => (
-                    item.href ? (
+                <div style={{ display:'flex', flexDirection:'column', gap:9 }}>
+                  {contactItems.map((item, i) => {
+                    const iconWrap = (
+                      <div style={{
+                        width:42, height:42, borderRadius:11, flexShrink:0,
+                        display:'flex', alignItems:'center', justifyContent:'center',
+                        background:`rgba(${toRgb(item.accent)},0.10)`,
+                        border:`1px solid rgba(${toRgb(item.accent)},0.28)`,
+                        color: item.accent,
+                        boxShadow:`inset 0 1px 0 rgba(255,255,255,0.9)`,
+                      }}>{item.icon}</div>
+                    );
+                    const textBlock = (
+                      <>
+                        <div>
+                          <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10,
+                            color:'#94a3b8', letterSpacing:'0.10em', textTransform:'uppercase', marginBottom:3, fontWeight:600 }}>
+                            {item.label}
+                          </p>
+                          <p style={{ color:'#334155', fontSize:13.5, fontWeight:500 }}>{item.value}</p>
+                        </div>
+                        {item.href && (
+                          <div style={{ marginLeft:'auto', color:'#94a3b8' }}>
+                            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/>
+                            </svg>
+                          </div>
+                        )}
+                      </>
+                    );
+                    return item.href ? (
                       <a key={i} href={item.href}
                         target={item.href.startsWith('http') ? '_blank' : '_self'}
                         rel="noopener noreferrer"
-                        className="ct-item"
-                        style={{ color:'inherit' }}>
-                        <div style={{
-                          width:40, height:40, borderRadius:11, flexShrink:0,
-                          display:'flex', alignItems:'center', justifyContent:'center',
-                          background:`rgba(${rgb(item.accent)},0.10)`,
-                          border:`1px solid rgba(${rgb(item.accent)},0.22)`,
-                          color: item.accent,
-                        }}>{item.icon}</div>
-                        <div>
-                          <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9,
-                            color:'#475569', letterSpacing:'0.12em', textTransform:'uppercase', marginBottom:3 }}>
-                            {item.label}
-                          </p>
-                          <p style={{ color:'#94a3b8', fontSize:13 }}>{item.value}</p>
-                        </div>
-                        <div style={{ marginLeft:'auto', color:'#334155' }}>
-                          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/>
-                          </svg>
-                        </div>
+                        className="ct-item">
+                        {iconWrap}{textBlock}
                       </a>
                     ) : (
                       <div key={i} className="ct-item">
-                        <div style={{
-                          width:40, height:40, borderRadius:11, flexShrink:0,
-                          display:'flex', alignItems:'center', justifyContent:'center',
-                          background:`rgba(${rgb(item.accent)},0.10)`,
-                          border:`1px solid rgba(${rgb(item.accent)},0.22)`,
-                          color: item.accent,
-                        }}>{item.icon}</div>
-                        <div>
-                          <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9,
-                            color:'#475569', letterSpacing:'0.12em', textTransform:'uppercase', marginBottom:3 }}>
-                            {item.label}
-                          </p>
-                          <p style={{ color:'#94a3b8', fontSize:13 }}>{item.value}</p>
-                        </div>
+                        {iconWrap}{textBlock}
                       </div>
-                    )
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
 
-              {/* Availability badge */}
+              {/* Availability card */}
               <div className={`ct-card p-6 text-center fu ${visible ? 'in' : ''}`}
                 style={{ animationDelay:'0.18s' }}>
-                <div className="avail-badge" style={{ margin:'0 auto 10px' }}>
+                <div className="avail-badge" style={{ margin:'0 auto 12px' }}>
                   <span style={{ position:'relative', display:'inline-flex', width:10, height:10 }}>
                     <span style={{
                       position:'absolute', inset:0, borderRadius:'50%', background:'#22c55e',
-                      animation:'ping 1.2s cubic-bezier(0,0,0.2,1) infinite', opacity:0.7,
+                      animation:'ping 1.2s cubic-bezier(0,0,0.2,1) infinite', opacity:0.6,
                     }} />
-                    <span style={{ position:'relative', width:10, height:10, borderRadius:'50%', background:'#22c55e', display:'block' }} />
+                    <span style={{ position:'relative', width:10, height:10, borderRadius:'50%', background:'#16a34a', display:'block' }} />
                   </span>
-                  <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, color:'#22c55e' }}>
+                  <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:12, color:'#15803d', fontWeight:600 }}>
                     Available for Opportunities
                   </span>
                 </div>
-                <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10, color:'#475569', lineHeight:1.7 }}>
+                <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, color:'#64748b', lineHeight:1.8 }}>
                   Open to internships · freelance · full-time roles
                 </p>
               </div>
@@ -429,66 +465,72 @@ const Contact = () => {
             <div className={`ct-card p-7 fu ${visible ? 'in' : ''}`} style={{ animationDelay:'0.15s' }}>
               <div className="sec-label">Send a Message</div>
 
-              {/* NOTE banner about EmailJS */}
-              <div style={{
-                background:'rgba(0,216,255,0.05)', border:'1px solid rgba(0,216,255,0.14)',
-                borderRadius:10, padding:'10px 14px', marginBottom:20,
-                fontFamily:"'JetBrains Mono',monospace", fontSize:10, color:'#475569', lineHeight:1.7,
-              }}>
-                💡 <span style={{ color:'#00d8ff' }}>Tip:</span> For live email delivery, add your <a
-                  href="https://emailjs.com" target="_blank" rel="noopener noreferrer"
-                  style={{ color:'#00d8ff', textDecoration:'underline' }}>EmailJS</a> keys in the
-                  <code style={{ color:'#a855f7', margin:'0 3px' }}>handleSubmit</code> function.
-                  Currently uses your default mail client as fallback.
+              {/* Tip banner */}
+              <div className="tip-banner">
+                💡 <span style={{ color:'#0284c7', fontWeight:600 }}>Tip:</span> For live email delivery, add your{' '}
+                <a href="https://emailjs.com" target="_blank" rel="noopener noreferrer"
+                  style={{ color:'#0284c7', textDecoration:'underline' }}>EmailJS</a> keys in the{' '}
+                <code style={{ color:'#6366f1', margin:'0 3px', fontWeight:600 }}>handleSubmit</code> function.
+                Currently uses your default mail client as fallback.
               </div>
 
               <form onSubmit={handleSubmit} style={{ display:'flex', flexDirection:'column', gap:16 }}>
 
-                {/* Name + Email row */}
-                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:14 }}>
-                  <Field label="Your Name" id="name" required>
-                    <input
-                      id="name" name="name" type="text" required
+                {/* Name + Email */}
+                <div className="form-row">
+                  <div>
+                    <label htmlFor="name" className="field-label">
+                      Your Name <span style={{ color:'#0ea5e9' }}>*</span>
+                    </label>
+                    <input id="name" name="name" type="text" required
                       value={form.name} onChange={handleChange}
                       placeholder="John Doe"
                       onFocus={() => setFocused('name')}
                       onBlur={() => setFocused(null)}
-                      style={focusStyle('name')}
+                      style={fieldStyle('name')}
                     />
-                  </Field>
-                  <Field label="Email Address" id="email" required>
-                    <input
-                      id="email" name="email" type="email" required
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="field-label">
+                      Email Address <span style={{ color:'#0ea5e9' }}>*</span>
+                    </label>
+                    <input id="email" name="email" type="email" required
                       value={form.email} onChange={handleChange}
                       placeholder="john@example.com"
                       onFocus={() => setFocused('email')}
                       onBlur={() => setFocused(null)}
-                      style={focusStyle('email')}
+                      style={fieldStyle('email')}
                     />
-                  </Field>
+                  </div>
                 </div>
 
-                <Field label="Subject" id="subject" required>
-                  <input
-                    id="subject" name="subject" type="text" required
+                {/* Subject */}
+                <div>
+                  <label htmlFor="subject" className="field-label">
+                    Subject <span style={{ color:'#0ea5e9' }}>*</span>
+                  </label>
+                  <input id="subject" name="subject" type="text" required
                     value={form.subject} onChange={handleChange}
                     placeholder="Project Collaboration"
                     onFocus={() => setFocused('subject')}
                     onBlur={() => setFocused(null)}
-                    style={focusStyle('subject')}
+                    style={fieldStyle('subject')}
                   />
-                </Field>
+                </div>
 
-                <Field label="Message" id="message" required>
-                  <textarea
-                    id="message" name="message" required rows={6}
+                {/* Message */}
+                <div>
+                  <label htmlFor="message" className="field-label">
+                    Message <span style={{ color:'#0ea5e9' }}>*</span>
+                  </label>
+                  <textarea id="message" name="message" required rows={6}
                     value={form.message} onChange={handleChange}
                     placeholder="Tell me about your project or idea..."
                     onFocus={() => setFocused('message')}
                     onBlur={() => setFocused(null)}
-                    style={{ ...focusStyle('message'), resize:'vertical', minHeight:130 }}
+                    style={{ ...fieldStyle('message'), resize:'vertical', minHeight:130 }}
                   />
-                </Field>
+                </div>
 
                 <button type="submit" disabled={status === 'sending'} className="submit-btn">
                   {status === 'sending' ? (
@@ -527,12 +569,11 @@ const Contact = () => {
 
           {/* ── Footer ── */}
           <div className="footer-bar">
-            © 2026 <span>Karen Ju Duncan</span>. All rights reserved. &nbsp;·&nbsp;
-            Built with <span>React</span> & <span>TailwindCSS</span> &nbsp;·&nbsp;
+            © 2026 <span className="accent">Karen Ju Duncan</span>. All rights reserved.
+            &nbsp;·&nbsp; Built with <span className="accent">React</span> &amp; <span className="accent">TailwindCSS</span>
+            &nbsp;·&nbsp;
             <a href="https://github.com/Ghost214-hue" target="_blank" rel="noopener noreferrer"
-              style={{ color:'#334155', textDecoration:'none', transition:'color 0.2s' }}
-              onMouseEnter={e => e.target.style.color='#00d8ff'}
-              onMouseLeave={e => e.target.style.color='#334155'}>
+              className="footer-link">
               github.com/Ghost214-hue
             </a>
           </div>

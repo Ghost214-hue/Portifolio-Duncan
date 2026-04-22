@@ -3,43 +3,31 @@ import React, { useEffect, useRef, useState } from 'react';
 
 /* ─── Data ─────────────────────────────────────────────────── */
 const hardSkills = [
-  { label: "JavaScript", color: "cyan"   },
-  { label: "TypeScript", color: "cyan"   },
-  { label: "Java",       color: "cyan"   },
-  { label: "PHP",        color: "cyan"   },
-  { label: "Node.js",    color: "cyan"   },
-  { label: "Express",    color: "cyan"   },
-  { label: "React",      color: "cyan"   },
-  { label: "HTML5",      color: "cyan"   },
-  { label: "CSS3",       color: "cyan"   },
-  { label: "TailwindCSS",color: "cyan"   },
-  { label: "SQL",        color: "cyan"   },
-  { label: "PostgreSQL", color: "cyan"   },
-  { label: "JWT",        color: "cyan"   },
-  { label: "Clerk",      color: "cyan"   },
-  { label: "REST APIs",  color: "cyan"   },
-  { label: "Git",        color: "cyan"   },
-  { label: "Power BI",   color: "cyan"   },
-  { label: "Testing",    color: "cyan"   },
+  { label: "JavaScript" }, { label: "TypeScript" }, { label: "Java" },
+  { label: "PHP" },        { label: "Node.js" },    { label: "Express" },
+  { label: "React" },      { label: "HTML5" },      { label: "CSS3" },
+  { label: "TailwindCSS" },{ label: "SQL" },         { label: "PostgreSQL" },
+  { label: "JWT" },        { label: "Clerk" },       { label: "REST APIs" },
+  { label: "Git" },        { label: "Power BI" },    { label: "Testing" },
 ];
 
 const softSkills = [
-  "Collaborative Leadership",
-  "Adaptability",
-  "Time Management",
-  "Critical Thinking",
-  "Open-mindedness",
-  "Negotiation",
-  "Advocacy & Persistence",
+  { label: "Collaborative Leadership", width: 88 },
+  { label: "Adaptability",             width: 82 },
+  { label: "Time Management",          width: 95 },
+  { label: "Critical Thinking",        width: 85 },
+  { label: "Open-mindedness",          width: 78 },
+  { label: "Negotiation",              width: 80 },
+  { label: "Advocacy & Persistence",   width: 86 },
 ];
 
 const achievements = [
-  { metric: "30%",    desc: "Reduction in administrative workload through HRM automation" },
-  { metric: "2 hrs",  desc: "WASREB report compilation — down from multiple days" },
+  { metric: "30%",      desc: "Reduction in administrative workload through HRM automation" },
+  { metric: "2 hrs",    desc: "WASREB report compilation — down from multiple days" },
   { metric: "KES 1.2M", desc: "Unbilled consumption restored through billing data audit" },
-  { metric: "91→98%", desc: "Billing accuracy improvement across 3 operational zones" },
-  { metric: "12 hrs", desc: "Weekly manual reporting eliminated via Power BI dashboard" },
-  { metric: "100%",   desc: "On-time WASREB regulatory submissions with zero rejections" },
+  { metric: "91→98%",   desc: "Billing accuracy improvement across 3 operational zones" },
+  { metric: "12 hrs",   desc: "Weekly manual reporting eliminated via Power BI dashboard" },
+  { metric: "100%",     desc: "On-time WASREB regulatory submissions with zero rejections" },
 ];
 
 const experience = [
@@ -69,8 +57,8 @@ const experience = [
   },
 ];
 
-/* ─── Intersection-observer hook ───────────────────────────── */
-function useVisible(threshold = 0.15) {
+/* ─── Intersection observer ─────────────────────────────────── */
+function useVisible(threshold = 0.08) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -84,32 +72,26 @@ function useVisible(threshold = 0.15) {
   return [ref, visible];
 }
 
-/* ─── Sub-components ────────────────────────────────────────── */
+/* ─── Reusable components ───────────────────────────────────── */
 const GlassCard = ({ children, className = '', style = {} }) => (
-  <div className={`glass-about-card ${className}`} style={style}>
-    {children}
-  </div>
+  <div className={`about-glass-card ${className}`} style={style}>{children}</div>
 );
 
 const SectionLabel = ({ children }) => (
   <h3 style={{
     fontFamily: "'Syne', sans-serif",
-    fontSize: '11px',
-    letterSpacing: '0.18em',
-    color: '#00d8ff',
-    textTransform: 'uppercase',
+    fontSize: '11px', letterSpacing: '0.18em',
+    color: '#0284c7', textTransform: 'uppercase',
     marginBottom: '18px',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
+    display: 'flex', alignItems: 'center', gap: '10px',
   }}>
-    <span style={{ flex: 1, height: 1, background: 'linear-gradient(to right, rgba(0,216,255,0.35), transparent)' }} />
+    <span style={{ flex: 1, height: 1, background: 'linear-gradient(to right, rgba(14,165,233,0.40), transparent)' }} />
     {children}
-    <span style={{ flex: 1, height: 1, background: 'linear-gradient(to left, rgba(0,216,255,0.35), transparent)' }} />
+    <span style={{ flex: 1, height: 1, background: 'linear-gradient(to left,  rgba(14,165,233,0.40), transparent)' }} />
   </h3>
 );
 
-/* ─── Main Component ─────────────────────────────────────────── */
+/* ─── Main ──────────────────────────────────────────────────── */
 const About = () => {
   const [sectionRef, sectionVisible] = useVisible();
 
@@ -118,97 +100,94 @@ const About = () => {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-        /* ── Core glass card ── */
-        .glass-about-card {
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(0,216,255,0.10);
-          backdrop-filter: blur(24px) saturate(160%);
-          -webkit-backdrop-filter: blur(24px) saturate(160%);
-          box-shadow:
-            0 20px 60px rgba(0,0,0,0.45),
-            inset 0 1px 0 rgba(255,255,255,0.06),
-            inset 0 -1px 0 rgba(0,0,0,0.2);
-          border-radius: 20px;
-          transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+        /* ── Reset & box-sizing ── */
+        *, *::before, *::after { box-sizing: border-box; }
+
+        /* ── Section background ── */
+        #about {
+          background:
+            radial-gradient(ellipse 70% 50% at 88% 12%, rgba(186,230,255,0.42) 0%, transparent 58%),
+            radial-gradient(ellipse 60% 45% at  8% 82%, rgba(199,210,254,0.36) 0%, transparent 58%),
+            linear-gradient(158deg, #f8fafc 0%, #f0f8ff 50%, #eef2ff 100%);
         }
-        .glass-about-card:hover {
-          border-color: rgba(0,216,255,0.22);
+
+        /* ── Dot grid ── */
+        .about-dot-grid {
+          background-image: radial-gradient(rgba(14,165,233,0.09) 1.5px, transparent 1.5px);
+          background-size: 26px 26px;
+        }
+
+        /* ── Glass card ── */
+        .about-glass-card {
+          background: rgba(255,255,255,0.54);
+          border: 1px solid rgba(255,255,255,0.92);
+          backdrop-filter: blur(28px) saturate(180%);
+          -webkit-backdrop-filter: blur(28px) saturate(180%);
           box-shadow:
-            0 24px 72px rgba(0,0,0,0.55),
-            0 0 30px rgba(0,216,255,0.08),
-            inset 0 1px 0 rgba(255,255,255,0.07);
+            0 16px 48px rgba(100,130,200,0.11),
+            0 4px 12px rgba(100,130,200,0.06),
+            inset 0 2px 0 rgba(255,255,255,1),
+            inset 0 -1px 0 rgba(180,210,255,0.28);
+          border-radius: 20px;
+          transition: border-color 0.35s, box-shadow 0.35s, transform 0.35s;
+        }
+        .about-glass-card:hover {
+          border-color: rgba(14,165,233,0.30);
+          box-shadow:
+            0 24px 64px rgba(14,165,233,0.13),
+            inset 0 2px 0 rgba(255,255,255,1);
           transform: translateY(-3px);
         }
 
-        /* ── Skill pill variants ── */
-        .pill-cyan {
-          background: rgba(0,216,255,0.07);
-          border: 1px solid rgba(0,216,255,0.18);
-          color: #7dd3e8;
-          transition: all 0.25s ease;
+        /* ── Education card ── */
+        .edu-card {
+          background: linear-gradient(135deg, rgba(224,242,254,0.58), rgba(238,242,255,0.58));
+          border: 1px solid rgba(14,165,233,0.22);
+          backdrop-filter: blur(28px) saturate(180%);
+          -webkit-backdrop-filter: blur(28px) saturate(180%);
+          box-shadow: 0 16px 48px rgba(14,165,233,0.09), inset 0 2px 0 rgba(255,255,255,1);
+          border-radius: 20px;
         }
-        .pill-cyan:hover {
-          background: rgba(0,216,255,0.14);
-          border-color: rgba(0,216,255,0.38);
-          color: #00d8ff;
-          box-shadow: 0 0 14px rgba(0,216,255,0.18);
-          transform: translateY(-2px);
+
+        /* ── Skill pills ── */
+        .pill-sky {
+          background: rgba(14,165,233,0.09);
+          border: 1px solid rgba(14,165,233,0.24);
+          color: #0369a1; font-weight: 600;
+          transition: all 0.22s ease; cursor: default;
         }
-        .pill-purple {
-          background: rgba(168,85,247,0.07);
-          border: 1px solid rgba(168,85,247,0.18);
-          color: #c084fc;
-          transition: all 0.25s ease;
-        }
-        .pill-purple:hover {
-          background: rgba(168,85,247,0.14);
-          border-color: rgba(168,85,247,0.38);
-          color: #a855f7;
-          box-shadow: 0 0 14px rgba(168,85,247,0.18);
+        .pill-sky:hover {
+          background: rgba(14,165,233,0.17);
+          border-color: rgba(14,165,233,0.48);
+          color: #0284c7;
+          box-shadow: 0 4px 14px rgba(14,165,233,0.18);
           transform: translateY(-2px);
         }
 
         /* ── Metric badge ── */
         .metric-badge {
-          background: linear-gradient(135deg, rgba(0,216,255,0.10), rgba(168,85,247,0.10));
-          border: 1px solid rgba(0,216,255,0.20);
-          backdrop-filter: blur(14px);
-          -webkit-backdrop-filter: blur(14px);
-          box-shadow: 0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06);
+          background: rgba(255,255,255,0.62);
+          border: 1px solid rgba(255,255,255,0.94);
+          backdrop-filter: blur(20px) saturate(180%);
+          -webkit-backdrop-filter: blur(20px) saturate(180%);
+          box-shadow: 0 8px 28px rgba(14,165,233,0.10), inset 0 2px 0 rgba(255,255,255,1);
           transition: all 0.3s ease;
+          border-radius: 16px;
         }
         .metric-badge:hover {
-          border-color: rgba(0,216,255,0.38);
-          box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 20px rgba(0,216,255,0.12);
-          transform: translateY(-3px) scale(1.02);
+          border-color: rgba(14,165,233,0.36);
+          box-shadow: 0 16px 44px rgba(14,165,233,0.16), inset 0 2px 0 rgba(255,255,255,1);
+          transform: translateY(-4px) scale(1.02);
         }
 
-        /* ── Timeline dot ── */
+        /* ── Timeline ── */
         .tl-dot-active {
-          background: #00d8ff;
-          box-shadow: 0 0 0 4px rgba(0,216,255,0.15), 0 0 18px rgba(0,216,255,0.5);
+          background: #0ea5e9;
+          box-shadow: 0 0 0 4px rgba(14,165,233,0.18), 0 0 18px rgba(14,165,233,0.42);
         }
         .tl-dot-past {
-          background: #334155;
-          border: 2px solid rgba(0,216,255,0.20);
-        }
-
-        /* ── Fade-up animation ── */
-        @keyframes fadeUp {
-          from { opacity:0; transform:translateY(30px); }
-          to   { opacity:1; transform:translateY(0); }
-        }
-        .fade-up   { opacity:0; }
-        .fade-up.in { animation: fadeUp 0.65s ease forwards; }
-
-        /* ── Education glass panel ── */
-        .edu-card {
-          background: linear-gradient(135deg, rgba(0,216,255,0.05), rgba(168,85,247,0.05));
-          border: 1px solid rgba(0,216,255,0.14);
-          backdrop-filter: blur(28px) saturate(150%);
-          -webkit-backdrop-filter: blur(28px) saturate(150%);
-          box-shadow: 0 20px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
-          border-radius: 20px;
+          background: #cbd5e1;
+          border: 2px solid rgba(14,165,233,0.28);
         }
 
         /* ── Progress bar ── */
@@ -217,190 +196,286 @@ const About = () => {
           to   { width: var(--w); }
         }
         .bar-fill {
-          height: 100%;
-          border-radius: 99px;
+          height: 100%; border-radius: 99px;
           animation: growBar 1.2s ease forwards;
         }
+
+        /* ── Fade-up ── */
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(28px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .fade-up     { opacity: 0; }
+        .fade-up.in  { animation: fadeUp 0.65s ease forwards; }
+
+        /* ── Shimmer heading ── */
+        @keyframes shimmer {
+          0%   { background-position: -200% center; }
+          100% { background-position:  200% center; }
+        }
+        .shimmer-heading {
+          background: linear-gradient(90deg, #0f172a 20%, #0ea5e9 50%, #0f172a 80%);
+          background-size: 300% auto;
+          -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+          animation: shimmer 6s linear infinite;
+        }
+
+        /* ══════════════════════════════════
+           RESPONSIVE LAYOUT GRID
+        ══════════════════════════════════ */
+
+        /* Full-width container — 16px gutters on mobile, 32px tablet, 48px desktop */
+        .about-container {
+          width: 100%;
+          padding-left:  16px;
+          padding-right: 16px;
+        }
+        @media (min-width: 640px) {
+          .about-container { padding-left: 24px; padding-right: 24px; }
+        }
+        @media (min-width: 1024px) {
+          .about-container { padding-left: 40px; padding-right: 40px; }
+        }
+        @media (min-width: 1280px) {
+          .about-container { padding-left: 56px; padding-right: 56px; }
+        }
+
+        /* Two-column grid: stacks on mobile, side-by-side from lg */
+        .about-2col {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+        @media (min-width: 1024px) {
+          .about-2col { grid-template-columns: 1fr 1fr; gap: 20px; }
+        }
+
+        /* Achievement grid: 1 col → 2 col → 3 col */
+        .achieve-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+        @media (min-width: 480px)  { .achieve-grid { grid-template-columns: 1fr 1fr; } }
+        @media (min-width: 1024px) { .achieve-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+
+        /* Contact chips wrap cleanly on small screens */
+        .contact-chips {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-top: 20px;
+        }
+        .contact-chip {
+          display: inline-flex; align-items: center; gap: 6px;
+          background: rgba(255,255,255,0.70);
+          border: 1px solid rgba(14,165,233,0.22);
+          backdrop-filter: blur(12px);
+          border-radius: 99px; padding: 6px 13px;
+          font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #334155;
+          box-shadow: inset 0 1px 0 rgba(255,255,255,1);
+          /* Allow chip to shrink on very small screens */
+          min-width: 0; word-break: break-all;
+        }
+        @media (max-width: 400px) {
+          .contact-chip { font-size: 10px; padding: 5px 10px; }
+        }
+
+        /* Cert cards side-by-side on sm+, stacked on mobile */
+        .cert-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+        @media (min-width: 480px) {
+          .cert-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        /* Skills pill wrap */
+        .skills-wrap {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
+        /* Section header spacing */
+        .about-header { text-align: center; margin-bottom: 48px; }
+        @media (min-width: 768px) { .about-header { margin-bottom: 64px; } }
+
+        /* Card padding — smaller on mobile */
+        .card-pad { padding: 20px; }
+        @media (min-width: 640px) { .card-pad { padding: 28px; } }
+        @media (min-width: 1024px) { .card-pad { padding: 32px; } }
+
+        /* Experience bullet font scaling */
+        .exp-bullet-text { font-size: 13.5px; line-height: 1.72; }
+        @media (min-width: 768px) { .exp-bullet-text { font-size: 14.5px; } }
       `}</style>
 
       <section
         id="about"
         ref={sectionRef}
-        style={{ background: '#060a0f', fontFamily: "'Syne', sans-serif", position: 'relative', overflowX: 'hidden' }}
-        className="py-24 md:py-32"
+        className="relative py-20 md:py-28 overflow-x-hidden"
+        style={{ fontFamily: "'Syne', sans-serif", width: '100%' }}
       >
-        {/* ── Ambient blobs ── */}
-        <div className="absolute inset-0 pointer-events-none z-0">
-          <div style={{ position:'absolute', top:'20%', right:'10%', width:480, height:480, borderRadius:'50%',
-            background:'radial-gradient(circle, rgba(0,216,255,0.08) 0%, transparent 70%)', filter:'blur(70px)',
-            animation:'pulse 7s ease-in-out infinite' }} />
-          <div style={{ position:'absolute', bottom:'15%', left:'5%', width:400, height:400, borderRadius:'50%',
-            background:'radial-gradient(circle, rgba(168,85,247,0.07) 0%, transparent 70%)', filter:'blur(70px)',
-            animation:'pulse 9s ease-in-out infinite 3s' }} />
-          {/* Fine dot grid */}
-          <div style={{ position:'absolute', inset:0,
-            backgroundImage:'radial-gradient(rgba(0,216,255,0.04) 1px, transparent 1px)',
-            backgroundSize:'32px 32px' }} />
+        {/* Dot grid */}
+        <div className="about-dot-grid absolute inset-0 z-0 pointer-events-none opacity-55" />
+
+        {/* Ambient blobs */}
+        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+          <div style={{ position:'absolute', top:'14%', right:'0%', width:'45vw', maxWidth:520, height:'45vw', maxHeight:520,
+            borderRadius:'50%', background:'radial-gradient(circle, rgba(186,230,255,0.52) 0%, transparent 70%)', filter:'blur(80px)' }} />
+          <div style={{ position:'absolute', bottom:'8%', left:'-3%', width:'40vw', maxWidth:440, height:'40vw', maxHeight:440,
+            borderRadius:'50%', background:'radial-gradient(circle, rgba(199,210,254,0.46) 0%, transparent 70%)', filter:'blur(80px)' }} />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10">
+        {/* ── Content ── */}
+        <div className="about-container relative z-10">
 
-          {/* ── Section header ── */}
-          <div className={`text-center mb-16 md:mb-20 fade-up ${sectionVisible ? 'in' : ''}`}
-            style={{ animationDelay: '0s' }}>
+          {/* ── Header ── */}
+          <div className={`about-header fade-up ${sectionVisible ? 'in' : ''}`}>
             <div style={{
               display:'inline-flex', alignItems:'center', gap:8,
-              background:'rgba(0,216,255,0.07)', border:'1px solid rgba(0,216,255,0.18)',
-              backdropFilter:'blur(14px)', borderRadius:99, padding:'6px 20px', marginBottom:20,
+              background:'rgba(255,255,255,0.68)',
+              border:'1px solid rgba(14,165,233,0.26)',
+              backdropFilter:'blur(16px)', borderRadius:99,
+              padding:'7px 22px', marginBottom:18,
+              boxShadow:'0 4px 16px rgba(14,165,233,0.10), inset 0 1px 0 rgba(255,255,255,1)',
             }}>
-              <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10, letterSpacing:'0.15em', color:'#00d8ff' }}>
+              <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, letterSpacing:'0.15em', color:'#0284c7', fontWeight:600 }}>
                 ABOUT ME
               </span>
             </div>
-            <h2 style={{
-              fontFamily:"'Syne',sans-serif", fontWeight:800,
-              fontSize:'clamp(2.4rem, 5vw, 3.8rem)', lineHeight:1.05,
-              background:'linear-gradient(90deg, #f1f5f9 20%, #00d8ff 50%, #f1f5f9 80%)',
-              WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text',
-            }}>
+            <h2 className="shimmer-heading"
+              style={{ fontWeight:800, fontSize:'clamp(2.2rem, 6vw, 3.8rem)', lineHeight:1.06, margin:'0 0 14px' }}>
               Who Am I?
             </h2>
-            <div style={{ width:64, height:3, borderRadius:99, margin:'16px auto 0',
-              background:'linear-gradient(90deg, #00d8ff, #a855f7)' }} />
+            <div style={{ width:60, height:3, borderRadius:99, margin:'0 auto',
+              background:'linear-gradient(90deg, #0ea5e9, #6366f1)' }} />
           </div>
 
-          {/* ── Row 1: Bio + Experience Timeline ── */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          {/* ── Row 1: Bio + Education ── */}
+          <div className={`about-2col mb-4 fade-up ${sectionVisible ? 'in' : ''}`} style={{ animationDelay:'0.08s' }}>
 
-            {/* Bio card */}
-            <GlassCard
-              className={`p-7 md:p-8 fade-up ${sectionVisible ? 'in' : ''}`}
-              style={{ animationDelay: '0.1s' }}
-            >
+            {/* Bio */}
+            <GlassCard className="card-pad">
               <SectionLabel>Professional Summary</SectionLabel>
-              <p style={{ color:'#94a3b8', lineHeight:1.8, marginBottom:16, fontSize:'14.5px' }}>
+              <p style={{ color:'#475569', lineHeight:1.85, marginBottom:14, fontSize:'15px' }}>
                 Innovative{' '}
-                <span style={{ color:'#00d8ff', fontWeight:600 }}>Full-Stack Developer</span>{' '}
+                <span style={{ color:'#0284c7', fontWeight:700 }}>Full-Stack Developer</span>{' '}
                 with a Computer Science degree and demonstrated experience building scalable web
                 applications for the water and sanitation sector. Skilled in modern JavaScript
                 frameworks, RESTful API design, and database optimisation.
               </p>
-              <p style={{ color:'#94a3b8', lineHeight:1.8, fontSize:'14.5px' }}>
+              <p style={{ color:'#475569', lineHeight:1.85, fontSize:'15px' }}>
                 Proven ability to architect end-to-end solutions — from HRM systems to regulatory
                 reporting tools — that automate workflows, eliminate manual errors, and deliver
                 data-driven insights. Background in CS has cultivated exceptional empathy,
                 cross-functional communication, and the ability to translate complex user needs
                 into intuitive technical solutions.
               </p>
-
-              {/* Contact snippet */}
-              <div style={{ display:'flex', flexWrap:'wrap', gap:10, marginTop:22 }}>
+              <div className="contact-chips">
                 {[
                   { icon:'📍', text:'Nairobi, Kenya' },
                   { icon:'📧', text:'karenjuduncan750@gmail.com' },
                   { icon:'📞', text:'+254 112 554 479' },
                 ].map((c,i) => (
-                  <span key={i} style={{
-                    display:'inline-flex', alignItems:'center', gap:6,
-                    background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.08)',
-                    backdropFilter:'blur(10px)', borderRadius:99, padding:'5px 14px',
-                    fontFamily:"'JetBrains Mono',monospace", fontSize:10, color:'#64748b',
-                  }}>
-                    {c.icon} {c.text}
-                  </span>
+                  <span key={i} className="contact-chip">{c.icon} {c.text}</span>
                 ))}
               </div>
             </GlassCard>
 
-            {/* Education card */}
-            <div className={`edu-card p-7 md:p-8 fade-up ${sectionVisible ? 'in' : ''}`}
-              style={{ animationDelay: '0.15s' }}>
+            {/* Education */}
+            <div className="edu-card card-pad">
               <SectionLabel>Education</SectionLabel>
-
-              <div style={{ display:'flex', alignItems:'flex-start', gap:16 }}>
+              <div style={{ display:'flex', alignItems:'flex-start', gap:14 }}>
                 <div style={{
-                  flexShrink:0, width:48, height:48, borderRadius:14,
-                  background:'linear-gradient(135deg, rgba(0,216,255,0.15), rgba(168,85,247,0.15))',
-                  border:'1px solid rgba(0,216,255,0.25)', display:'flex', alignItems:'center',
-                  justifyContent:'center', fontSize:22,
+                  flexShrink:0, width:50, height:50, borderRadius:13,
+                  background:'linear-gradient(135deg, rgba(14,165,233,0.15), rgba(99,102,241,0.15))',
+                  border:'1px solid rgba(14,165,233,0.28)',
+                  boxShadow:'inset 0 1px 0 rgba(255,255,255,0.9)',
+                  display:'flex', alignItems:'center', justifyContent:'center', fontSize:22,
                 }}>🎓</div>
-                <div>
-                  <h4 style={{ color:'#f1f5f9', fontWeight:700, fontSize:17, marginBottom:4 }}>
+                <div style={{ flex:1, minWidth:0 }}>
+                  <h4 style={{ color:'#0f172a', fontWeight:700, fontSize:'clamp(15px,2.5vw,18px)', marginBottom:4 }}>
                     BSc. Computer Science
                   </h4>
-                  <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, color:'#00d8ff', marginBottom:6 }}>
+                  <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:12, color:'#0284c7', fontWeight:600, marginBottom:5 }}>
                     St. Paul's University · Limuru, Kenya
                   </p>
-                  <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10, color:'#475569' }}>
+                  <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, color:'#64748b' }}>
                     September 2021 – November 2025
                   </p>
                 </div>
               </div>
 
-              <div style={{ margin:'24px 0 8px', height:1, background:'rgba(0,216,255,0.08)' }} />
+              <div style={{ margin:'20px 0 16px', height:1, background:'rgba(14,165,233,0.14)' }} />
 
-              {/* Certifications row */}
               <SectionLabel>Certifications</SectionLabel>
-              <div style={{ display:'flex', flexWrap:'wrap', gap:10 }}>
+              <div className="cert-grid">
                 {[
                   { name:'Cisco Networking Academy', tag:'Cybersecurity' },
                   { name:'Cyber Shujaa',              tag:'Ethical Hacking & Pen Testing' },
                 ].map((c,i) => (
                   <div key={i} style={{
-                    background:'rgba(0,216,255,0.06)', border:'1px solid rgba(0,216,255,0.16)',
-                    borderRadius:12, padding:'10px 14px', flex:1, minWidth:160,
+                    background:'rgba(255,255,255,0.68)',
+                    border:'1px solid rgba(14,165,233,0.20)',
+                    borderRadius:12, padding:'12px 14px',
+                    boxShadow:'inset 0 1px 0 rgba(255,255,255,1)',
                   }}>
-                    <p style={{ color:'#00d8ff', fontWeight:600, fontSize:12, marginBottom:3 }}>{c.name}</p>
-                    <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10, color:'#475569' }}>{c.tag}</p>
+                    <p style={{ color:'#0284c7', fontWeight:700, fontSize:13, marginBottom:3 }}>{c.name}</p>
+                    <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, color:'#64748b' }}>{c.tag}</p>
                   </div>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* ── Row 2: Experience Timeline (full-width) ── */}
+          {/* ── Row 2: Work Experience ── */}
           <GlassCard
-            className={`p-7 md:p-8 mb-6 fade-up ${sectionVisible ? 'in' : ''}`}
-            style={{ animationDelay: '0.2s' }}
+            className={`card-pad mb-4 fade-up ${sectionVisible ? 'in' : ''}`}
+            style={{ animationDelay:'0.16s' }}
           >
             <SectionLabel>Work Experience</SectionLabel>
-            <div style={{ display:'flex', flexDirection:'column', gap:0 }}>
+            <div style={{ display:'flex', flexDirection:'column' }}>
               {experience.map((job, ji) => (
-                <div key={ji} style={{ display:'flex', gap:20, position:'relative' }}>
+                <div key={ji} style={{ display:'flex', gap:16, position:'relative' }}>
 
-                  {/* Timeline spine */}
+                  {/* Spine */}
                   <div style={{ display:'flex', flexDirection:'column', alignItems:'center', flexShrink:0 }}>
                     <div className={job.active ? 'tl-dot-active' : 'tl-dot-past'}
-                      style={{ width:14, height:14, borderRadius:'50%', marginTop:4, flexShrink:0 }} />
+                      style={{ width:13, height:13, borderRadius:'50%', marginTop:4 }} />
                     {ji < experience.length - 1 && (
-                      <div style={{ width:1, flexGrow:1, marginTop:6, marginBottom:6,
-                        background:'linear-gradient(to bottom, rgba(0,216,255,0.25), rgba(0,216,255,0.04))' }} />
+                      <div style={{
+                        width:1, flexGrow:1, marginTop:6, marginBottom:6,
+                        background:'linear-gradient(to bottom, rgba(14,165,233,0.38), rgba(14,165,233,0.05))',
+                      }} />
                     )}
                   </div>
 
                   {/* Content */}
-                  <div style={{ paddingBottom: ji < experience.length - 1 ? 32 : 0, flex:1 }}>
-                    <div style={{ display:'flex', flexWrap:'wrap', alignItems:'center', gap:10, marginBottom:6 }}>
-                      <h4 style={{ color:'#f1f5f9', fontWeight:700, fontSize:16 }}>{job.role}</h4>
+                  <div style={{ flex:1, minWidth:0, paddingBottom: ji < experience.length - 1 ? 28 : 0 }}>
+                    <div style={{ display:'flex', flexWrap:'wrap', alignItems:'center', gap:8, marginBottom:5 }}>
+                      <h4 style={{ color:'#0f172a', fontWeight:700, fontSize:'clamp(15px,2.5vw,17px)', margin:0 }}>{job.role}</h4>
                       {job.active && (
                         <span style={{
                           fontFamily:"'JetBrains Mono',monospace", fontSize:9, letterSpacing:'0.1em',
-                          background:'rgba(34,197,94,0.12)', border:'1px solid rgba(34,197,94,0.3)',
-                          color:'#22c55e', borderRadius:99, padding:'2px 10px',
+                          background:'rgba(34,197,94,0.12)', border:'1px solid rgba(34,197,94,0.32)',
+                          color:'#16a34a', borderRadius:99, padding:'2px 9px',
                         }}>CURRENT</span>
                       )}
                     </div>
-                    <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, color:'#00d8ff', marginBottom:4 }}>
+                    <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:12, color:'#0284c7', fontWeight:600, marginBottom:3 }}>
                       {job.company}
                     </p>
-                    <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10, color:'#475569', marginBottom:14 }}>
+                    <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, color:'#64748b', marginBottom:12 }}>
                       {job.period} · {job.location}
                     </p>
                     <ul style={{ listStyle:'none', padding:0, margin:0, display:'flex', flexDirection:'column', gap:8 }}>
                       {job.bullets.map((b,bi) => (
-                        <li key={bi} style={{ display:'flex', gap:10, alignItems:'flex-start' }}>
-                          <span style={{ color:'#00d8ff', marginTop:2, flexShrink:0, fontSize:12 }}>▹</span>
-                          <span style={{ color:'#94a3b8', fontSize:13.5, lineHeight:1.7 }}>{b}</span>
+                        <li key={bi} style={{ display:'flex', gap:9, alignItems:'flex-start' }}>
+                          <span style={{ color:'#0ea5e9', marginTop:2, flexShrink:0, fontSize:12 }}>▹</span>
+                          <span className="exp-bullet-text" style={{ color:'#475569' }}>{b}</span>
                         </li>
                       ))}
                     </ul>
@@ -410,76 +485,68 @@ const About = () => {
             </div>
           </GlassCard>
 
-          {/* ── Row 3: Skills (2-col) ── */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          {/* ── Row 3: Skills ── */}
+          <div className={`about-2col mb-4 fade-up ${sectionVisible ? 'in' : ''}`} style={{ animationDelay:'0.22s' }}>
 
-            {/* Hard Skills */}
-            <GlassCard
-              className={`p-7 md:p-8 fade-up ${sectionVisible ? 'in' : ''}`}
-              style={{ animationDelay: '0.25s' }}
-            >
+            {/* Hard skills */}
+            <GlassCard className="card-pad">
               <SectionLabel>Technical Skills</SectionLabel>
-              <div style={{ display:'flex', flexWrap:'wrap', gap:8 }}>
+              <div className="skills-wrap">
                 {hardSkills.map((s,i) => (
-                  <span key={i} className="pill-cyan"
-                    style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, borderRadius:8, padding:'6px 12px', cursor:'default' }}>
+                  <span key={i} className="pill-sky"
+                    style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:12, borderRadius:8, padding:'7px 13px' }}>
                     {s.label}
                   </span>
                 ))}
               </div>
             </GlassCard>
 
-            {/* Soft Skills + mini bars */}
-            <GlassCard
-              className={`p-7 md:p-8 fade-up ${sectionVisible ? 'in' : ''}`}
-              style={{ animationDelay: '0.3s' }}
-            >
+            {/* Soft skills */}
+            <GlassCard className="card-pad">
               <SectionLabel>Soft Skills</SectionLabel>
-              <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
-                {softSkills.map((s,i) => {
-                  const widths = [88,82,95,85,78,80,86];
-                  return (
-                    <div key={i}>
-                      <div style={{ display:'flex', justifyContent:'space-between', marginBottom:5 }}>
-                        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, color:'#c084fc' }}>{s}</span>
-                        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10, color:'#475569' }}>{widths[i]}%</span>
-                      </div>
-                      <div style={{ height:4, borderRadius:99, background:'rgba(168,85,247,0.10)', overflow:'hidden' }}>
-                        {sectionVisible && (
-                          <div className="bar-fill" style={{
-                            '--w': `${widths[i]}%`,
-                            background:'linear-gradient(to right, #a855f7, #00d8ff)',
-                            animationDelay: `${0.4 + i * 0.08}s`,
-                          }} />
-                        )}
-                      </div>
+              <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+                {softSkills.map((s,i) => (
+                  <div key={i}>
+                    <div style={{ display:'flex', justifyContent:'space-between', marginBottom:6 }}>
+                      <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:12, color:'#334155', fontWeight:600 }}>{s.label}</span>
+                      <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, color:'#94a3b8' }}>{s.width}%</span>
                     </div>
-                  );
-                })}
+                    <div style={{ height:5, borderRadius:99, background:'rgba(14,165,233,0.10)', overflow:'hidden' }}>
+                      {sectionVisible && (
+                        <div className="bar-fill" style={{
+                          '--w': `${s.width}%`,
+                          background: 'linear-gradient(to right, #0ea5e9, #6366f1)',
+                          animationDelay: `${0.35 + i * 0.07}s`,
+                        }} />
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
             </GlassCard>
           </div>
 
-          {/* ── Row 4: Achievements grid ── */}
-          <div className={`fade-up ${sectionVisible ? 'in' : ''}`} style={{ animationDelay:'0.35s' }}>
-            <div style={{ textAlign:'center', marginBottom:24 }}>
+          {/* ── Row 4: Achievements ── */}
+          <div className={`fade-up ${sectionVisible ? 'in' : ''}`} style={{ animationDelay:'0.30s' }}>
+            <div style={{ textAlign:'center', marginBottom:20 }}>
               <span style={{
-                fontFamily:"'JetBrains Mono',monospace", fontSize:10, letterSpacing:'0.18em',
-                color:'#00d8ff', textTransform:'uppercase',
+                fontFamily:"'JetBrains Mono',monospace", fontSize:11, letterSpacing:'0.18em',
+                color:'#0284c7', textTransform:'uppercase', fontWeight:600,
               }}>Key Achievements</span>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="achieve-grid">
               {achievements.map((a,i) => (
-                <div key={i} className="metric-badge rounded-2xl p-5 text-center cursor-default">
+                <div key={i} className="metric-badge card-pad" style={{ textAlign:'center', cursor:'default' }}>
                   <div style={{
                     fontFamily:"'Syne',sans-serif", fontWeight:800,
-                    fontSize:'clamp(1.5rem,3vw,2rem)', color:'#00d8ff', marginBottom:8,
-                    background:'linear-gradient(135deg,#00d8ff,#a855f7)',
+                    fontSize:'clamp(1.4rem, 4vw, 2rem)',
+                    background:'linear-gradient(135deg, #0ea5e9, #6366f1)',
                     WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text',
+                    marginBottom:8,
                   }}>
                     {a.metric}
                   </div>
-                  <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10.5, color:'#64748b', lineHeight:1.6 }}>
+                  <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, color:'#64748b', lineHeight:1.65, margin:0 }}>
                     {a.desc}
                   </p>
                 </div>
