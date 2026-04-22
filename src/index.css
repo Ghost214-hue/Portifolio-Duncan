@@ -1,0 +1,142 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg-dark: #0a0a0f;
+    --color-bg-deep: #0f0f1a;
+    --color-bg-surface: #141420;
+    --color-cyan: #00d8ff;
+    --color-cyan-dark: #009ab8;
+    --color-green: #00f593;
+    --color-purple: #9b79ff;
+    --color-text-primary: #dde3ee;
+    --color-text-muted: #687087;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: linear-gradient(135deg, #0a0a0f 0%, #0f0f1a 50%, #141420 100%);
+    color: var(--color-text-primary);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg-dark);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-cyan);
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .glass-nav {
+    background: rgba(10, 10, 15, 0.75);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+  
+  .glass-card {
+    background: rgba(20, 20, 32, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.3s ease;
+  }
+  
+  .glass-card:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(0, 216, 255, 0.2);
+    transform: translateY(-4px);
+  }
+  
+  .btn-cyan {
+    background: linear-gradient(135deg, #00d8ff, #009ab8);
+    color: #030a12;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-cyan:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 216, 255, 0.3);
+  }
+  
+  .btn-outline {
+    border: 1px solid rgba(0, 216, 255, 0.3);
+    color: #00d8ff;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-outline:hover {
+    background: rgba(0, 216, 255, 0.1);
+    border-color: #00d8ff;
+    transform: translateY(-2px);
+  }
+}
+
+@layer utilities {
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  @keyframes glow {
+    0% { box-shadow: 0 0 5px rgba(0, 216, 255, 0.2); }
+    100% { box-shadow: 0 0 25px rgba(0, 216, 255, 0.5); }
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+  }
+  
+  .text-gradient {
+    background: linear-gradient(135deg, #00d8ff, #9b79ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-slow-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
+
+.animate-spin-slow-reverse {
+  animation: spin-slow-reverse 15s linear infinite;
+}
