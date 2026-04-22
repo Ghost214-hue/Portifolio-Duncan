@@ -6,18 +6,18 @@ const Hero = () => {
   const [roleIndex, setRoleIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-  
+
   const roles = [
     "Full-Stack Developer",
-    "Cybersecurity Enthusiast",
-    "Ethical Hacker",
-    "CS Student"
+    "Software Engineer",
+    "Backend Architect",
+    "CS Graduate",
   ];
-  
+
   useEffect(() => {
     const currentRole = roles[roleIndex];
     let timer;
-    
+
     if (isDeleting) {
       if (charIndex > 0) {
         timer = setTimeout(() => setCharIndex(charIndex - 1), 50);
@@ -32,164 +32,292 @@ const Hero = () => {
         timer = setTimeout(() => setIsDeleting(true), 2000);
       }
     }
-    
+
     setTypedText(currentRole.substring(0, charIndex));
-    
     return () => clearTimeout(timer);
   }, [charIndex, isDeleting, roleIndex]);
-  
+
   const stats = [
-    { value: "2+", label: "Years Experience" },
+    { value: "2+", label: "Years Exp" },
     { value: "3+", label: "Major Projects" },
     { value: "2", label: "Certifications" },
     { value: "20+", label: "Technologies" },
   ];
-  
+
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Animated Background */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-[120px] animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-500/20 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-green-500/10 rounded-full blur-[140px]"></div>
-        
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 64 64\'%3E%3Cpath fill=\'none\' stroke=\'rgba(0,216,255,0.03)\' stroke-width=\'1\' d=\'M0 0h64v64H0z\'/%3E%3C/svg%3E')] bg-[length:64px_64px]"></div>
-      </div>
-      
-      {/* Hero Content - Split Layout */}
-      <div className="relative z-10 container mx-auto px-4 md:px-8">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20">
-          
-          {/* Left Side - Information */}
-          <div className="flex-1 text-center lg:text-left">
-            {/* Status Badge */}
-            <div className="inline-flex items-center gap-2 glass-card rounded-full px-5 py-2 mb-8 animate-float lg:mx-0 mx-auto">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-              </span>
-              <span className="font-['JetBrains_Mono',monospace] text-xs text-cyan-400 tracking-wider">Available for Internship</span>
-            </div>
-            
-            {/* Name */}
-            <h1 className="font-['Syne',sans-serif] text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter mb-4">
-              <span className="text-white">Karen Ju</span>
-              <br />
-              <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent animate-pulse">
-                Duncan
-              </span>
-            </h1>
-            
-            {/* Typed Role */}
-            <div className="flex items-center gap-2 mb-6 lg:justify-start justify-center">
-              <span className="font-['JetBrains_Mono',monospace] text-sm md:text-base text-gray-400">&gt;</span>
-              <div className="font-['JetBrains_Mono',monospace] text-lg md:text-xl text-green-400">
-                {typedText}
-                <span className="inline-block w-0.5 h-5 bg-green-400 ml-1 animate-pulse"></span>
+    <>
+      {/* Inject keyframes + glass utilities into a style tag */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-12px); }
+        }
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes spin-slow-reverse {
+          from { transform: rotate(360deg); }
+          to { transform: rotate(0deg); }
+        }
+        @keyframes shimmer {
+          0% { background-position: -200% center; }
+          100% { background-position: 200% center; }
+        }
+        @keyframes fadeSlideUp {
+          from { opacity: 0; transform: translateY(28px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-float       { animation: float 4s ease-in-out infinite; }
+        .animate-spin-slow   { animation: spin-slow 14s linear infinite; }
+        .animate-spin-slow-reverse { animation: spin-slow-reverse 10s linear infinite; }
+        .animate-fade-up     { animation: fadeSlideUp 0.7s ease forwards; }
+
+        /* glassmorphism card */
+        .glass-card {
+          background: rgba(255,255,255,0.045);
+          border: 1px solid rgba(255,255,255,0.10);
+          backdrop-filter: blur(18px);
+          -webkit-backdrop-filter: blur(18px);
+          box-shadow: 0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08);
+        }
+        /* deeper glass panel */
+        .glass-deep {
+          background: rgba(255,255,255,0.03);
+          border: 1px solid rgba(0,216,255,0.12);
+          backdrop-filter: blur(28px) saturate(160%);
+          -webkit-backdrop-filter: blur(28px) saturate(160%);
+          box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(0,216,255,0.1);
+        }
+        /* frosted badge */
+        .glass-badge {
+          background: rgba(0,216,255,0.08);
+          border: 1px solid rgba(0,216,255,0.25);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          box-shadow: 0 0 20px rgba(0,216,255,0.15), inset 0 1px 0 rgba(255,255,255,0.07);
+        }
+
+        .btn-cyan {
+          background: linear-gradient(135deg, rgba(0,216,255,0.85), rgba(0,180,230,0.9));
+          color: #000;
+          border: 1px solid rgba(0,216,255,0.6);
+          box-shadow: 0 0 24px rgba(0,216,255,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+          transition: all 0.3s ease;
+          backdrop-filter: blur(8px);
+        }
+        .btn-cyan:hover {
+          box-shadow: 0 0 40px rgba(0,216,255,0.55), 0 0 80px rgba(0,216,255,0.2);
+          transform: translateY(-2px);
+        }
+        .btn-outline {
+          background: rgba(255,255,255,0.04);
+          color: #e2e8f0;
+          border: 1px solid rgba(255,255,255,0.14);
+          backdrop-filter: blur(12px);
+          box-shadow: 0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.07);
+          transition: all 0.3s ease;
+        }
+        .btn-outline:hover {
+          background: rgba(0,216,255,0.07);
+          border-color: rgba(0,216,255,0.35);
+          box-shadow: 0 0 24px rgba(0,216,255,0.2);
+          transform: translateY(-2px);
+        }
+
+        .shimmer-text {
+          background: linear-gradient(90deg, #00d8ff, #a855f7, #00d8ff, #a855f7);
+          background-size: 300% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: shimmer 5s linear infinite;
+        }
+
+        .stat-card {
+          background: rgba(255,255,255,0.03);
+          border: 1px solid rgba(0,216,255,0.1);
+          backdrop-filter: blur(20px) saturate(150%);
+          -webkit-backdrop-filter: blur(20px) saturate(150%);
+          box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(0,216,255,0.08);
+          transition: all 0.35s ease;
+        }
+        .stat-card:hover {
+          background: rgba(0,216,255,0.06);
+          border-color: rgba(0,216,255,0.28);
+          box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 20px rgba(0,216,255,0.15);
+          transform: translateY(-3px);
+        }
+      `}</style>
+
+      <section
+        id="home"
+        style={{ fontFamily: "'Syne', sans-serif", background: '#060a0f' }}
+        className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
+      >
+        {/* ── Deep ambient blobs ── */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(0,216,255,0.12) 0%, transparent 70%)', filter: 'blur(80px)', animation: 'pulse 6s ease-in-out infinite' }} />
+          <div className="absolute bottom-1/4 right-1/4 w-[420px] h-[420px] rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(168,85,247,0.10) 0%, transparent 70%)', filter: 'blur(80px)', animation: 'pulse 8s ease-in-out infinite 2s' }} />
+          <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.06) 0%, transparent 70%)', filter: 'blur(100px)', transform: 'translate(-50%,-50%)' }} />
+
+          {/* Fine dot-grid */}
+          <div className="absolute inset-0"
+            style={{ backgroundImage: 'radial-gradient(rgba(0,216,255,0.06) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+        </div>
+
+        {/* ── Main layout ── */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-14 lg:gap-24">
+
+            {/* ── LEFT — Text content ── */}
+            <div className="flex-1 text-center lg:text-left" style={{ animation: 'fadeSlideUp 0.8s ease forwards' }}>
+
+              {/* Status badge */}
+              <div className="inline-flex items-center gap-2.5 glass-badge rounded-full px-5 py-2 mb-8 animate-float">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+                    style={{ background: '#22c55e' }} />
+                  <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: '#22c55e' }} />
+                </span>
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', letterSpacing: '0.1em', color: '#00d8ff' }}>
+                  Available for Opportunities
+                </span>
+              </div>
+
+              {/* Name */}
+              <h1 style={{ fontFamily: "'Syne', sans-serif", lineHeight: 1.05 }}
+                className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter mb-5">
+                <span style={{ color: '#f1f5f9' }}>Karen Ju</span>
+                <br />
+                <span className="shimmer-text">Duncan</span>
+              </h1>
+
+              {/* Typed role */}
+              <div className="flex items-center gap-2 mb-6 justify-center lg:justify-start">
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#64748b', fontSize: '15px' }}>&gt;</span>
+                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '18px', color: '#4ade80' }}>
+                  {typedText}
+                  <span className="inline-block ml-1 align-middle"
+                    style={{ width: '2px', height: '20px', background: '#4ade80', animation: 'pulse 1s ease-in-out infinite', display: 'inline-block' }} />
+                </div>
+              </div>
+
+              {/* Bio */}
+              <p style={{ color: '#94a3b8', lineHeight: 1.75, maxWidth: '580px' }}
+                className="text-sm md:text-base mb-8 mx-auto lg:mx-0">
+                Innovative Full-Stack Developer with a Computer Science degree and demonstrated experience
+                building scalable web applications for the water and sanitation sector. Skilled in modern
+                JavaScript frameworks, RESTful API design, and database optimization—architecting solutions
+                from HRM systems to regulatory reporting tools trained by{' '}
+                <span style={{ color: '#00d8ff' }}>St. Paul's University</span>.
+              </p>
+
+              {/* CTA row */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12">
+                <button className="btn-cyan px-8 py-3 rounded-full font-semibold flex items-center justify-center gap-2 group"
+                  style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '13px' }}>
+                  View Projects
+                  <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </button>
+                <button className="btn-outline px-8 py-3 rounded-full font-semibold flex items-center justify-center gap-2 group"
+                  style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '13px' }}>
+                  Get in Touch
+                  <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Stats */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-xl mx-auto lg:mx-0">
+                {stats.map((stat, i) => (
+                  <div key={i} className="stat-card rounded-2xl p-4 text-center cursor-default"
+                    style={{ animationDelay: `${i * 0.1}s` }}>
+                    <div style={{ fontFamily: "'Syne', sans-serif", fontSize: '28px', fontWeight: 800, color: '#00d8ff' }}
+                      className="mb-1">{stat.value}</div>
+                    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '9px', color: '#475569', letterSpacing: '0.12em' }}
+                      className="uppercase">{stat.label}</div>
+                  </div>
+                ))}
               </div>
             </div>
-            
-            {/* Description */}
-            <p className="max-w-2xl text-gray-400 text-sm md:text-base leading-relaxed mb-8 lg:mx-0 mx-auto">
-              Innovative Full-Stack Developer with a Computer Science degree and demonstrated experience building 
-              scalable web applications for the water and sanitation sector. Skilled in modern JavaScript frameworks, 
-              RESTful API design, and database optimization. Trained in ethical hacking and penetration testing through 
-              <span className="text-cyan-400"> Cisco & Cyber Shujaa</span>.
-            </p>
-            
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12">
-              <button className="group btn-cyan px-8 py-3 rounded-full font-['JetBrains_Mono',monospace] text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer">
-                View Projects
-                <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </button>
-              <button className="group btn-outline px-8 py-3 rounded-full font-['JetBrains_Mono',monospace] text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer">
-                Get in Touch
-                <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </button>
-            </div>
-            
-            {/* Stats Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl">
-              {stats.map((stat, index) => (
-                <div 
-                  key={index}
-                  className="glass-card rounded-2xl p-4 text-center group cursor-pointer hover:border-cyan-400/30 transition-all duration-300"
-                >
-                  <div className="font-['Syne',sans-serif] text-2xl md:text-3xl font-bold text-cyan-400 mb-1 group-hover:scale-110 transition-transform">
-                    {stat.value}
-                  </div>
-                  <div className="font-['JetBrains_Mono',monospace] text-[10px] text-gray-500 uppercase tracking-wider">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          {/* Right Side - ENLARGED Profile Image with Cyan Shadow */}
-          <div className="flex-1 flex justify-center lg:justify-end">
-            <div className="relative group">
-              {/* Enhanced cyan shadow effects - larger and more prominent */}
-              <div className="absolute -inset-8 rounded-full bg-cyan-400/30 blur-3xl animate-pulse"></div>
-              <div className="absolute -inset-4 rounded-full bg-cyan-500/40 blur-2xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-              <div className="absolute -inset-12 rounded-full bg-purple-500/20 blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-              
-              {/* Main image container - ENLARGED */}
-              <div className="relative w-96 h-96 md:w-[500px] md:h-[500px] lg:w-[600px] lg:h-[600px]">
-                {/* Thick cyan gradient border with intense glow */}
-                <div className="absolute -inset-6 bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-400 rounded-full opacity-90 blur-xl group-hover:opacity-100 transition duration-500"></div>
-                <div className="absolute -inset-6 bg-gradient-to-r from-cyan-400 via-purple-500 to-cyan-400 rounded-full opacity-60 blur-2xl group-hover:opacity-80 transition duration-500"></div>
-                
-                {/* Secondary border ring */}
-                <div className="absolute -inset-8 rounded-full border-4 border-cyan-400/30 blur-sm"></div>
-                
-                {/* Image circle with intense cyan shadow */}
-                <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-cyan-400 shadow-[0_0_80px_rgba(0,255,255,0.5)] group-hover:shadow-[0_0_120px_rgba(0,255,255,0.7)] transition-all duration-500 bg-gradient-to-br from-gray-900 to-black">
-                  {/* Replace this with your actual image */}
-                  <img 
-                    src="/src/assets/portfolio.jpeg" 
+
+            {/* ── RIGHT — Profile image ── */}
+            <div className="flex-1 flex justify-center lg:justify-end"
+              style={{ animation: 'fadeSlideUp 1s ease 0.2s forwards', opacity: 0 }}>
+              <div className="relative group">
+
+                {/* Ambient glow layers */}
+                <div className="absolute -inset-10 rounded-full pointer-events-none"
+                  style={{ background: 'radial-gradient(circle, rgba(0,216,255,0.22) 0%, transparent 70%)', filter: 'blur(40px)', animation: 'pulse 5s ease-in-out infinite' }} />
+                <div className="absolute -inset-6 rounded-full pointer-events-none"
+                  style={{ background: 'radial-gradient(circle, rgba(168,85,247,0.14) 0%, transparent 70%)', filter: 'blur(30px)', animation: 'pulse 7s ease-in-out infinite 2s' }} />
+
+                {/* Rotating rings */}
+                <div className="absolute inset-0 rounded-full animate-spin-slow pointer-events-none"
+                  style={{ border: '2px dashed rgba(0,216,255,0.35)' }} />
+                <div className="absolute inset-10 rounded-full animate-spin-slow-reverse pointer-events-none"
+                  style={{ border: '1px dotted rgba(168,85,247,0.3)' }} />
+
+                {/* Image container */}
+                <div className="relative w-80 h-80 md:w-[420px] md:h-[420px] lg:w-[500px] lg:h-[500px] rounded-full overflow-hidden"
+                  style={{
+                    border: '3px solid rgba(0,216,255,0.55)',
+                    boxShadow: '0 0 60px rgba(0,216,255,0.4), 0 0 120px rgba(0,216,255,0.15), inset 0 0 40px rgba(0,216,255,0.06)',
+                    background: 'linear-gradient(135deg, #0a1628, #060a0f)',
+                    transition: 'box-shadow 0.5s ease',
+                  }}>
+                  <img
+                    src="/src/assets/portfolio.jpeg"
                     alt="Karen Ju Duncan"
                     className="w-full h-full object-cover scale-105"
                   />
-                  
-                  {/* Cyan overlay on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-cyan-500/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  
-                  {/* Inner cyan glow ring */}
-                  <div className="absolute inset-0 rounded-full border-2 border-cyan-400/40 shadow-inner shadow-cyan-400/50"></div>
+                  {/* Glass overlay on hover */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{ background: 'linear-gradient(to top, rgba(0,216,255,0.18), transparent)' }} />
+                  {/* Inner rim */}
+                  <div className="absolute inset-0 rounded-full pointer-events-none"
+                    style={{ border: '1px solid rgba(0,216,255,0.2)', boxShadow: 'inset 0 0 30px rgba(0,216,255,0.08)' }} />
                 </div>
-                
-                {/* Enhanced animated cyan particles around the image */}
-                <div className="absolute -top-6 -right-6 w-12 h-12 bg-cyan-400 rounded-full blur-md animate-ping"></div>
-                <div className="absolute -bottom-4 -left-4 w-10 h-10 bg-cyan-500 rounded-full blur-md animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-                <div className="absolute top-1/2 -right-8 w-5 h-5 bg-cyan-300 rounded-full blur-sm animate-pulse" style={{ animationDelay: '1s' }}></div>
-                <div className="absolute top-1/4 -left-6 w-6 h-6 bg-purple-400 rounded-full blur-md animate-pulse" style={{ animationDelay: '1.5s' }}></div>
-                <div className="absolute bottom-1/4 -right-5 w-4 h-4 bg-cyan-400 rounded-full blur-sm animate-ping" style={{ animationDelay: '0.8s' }}></div>
-                
-                {/* Rotating cyan ring - thicker and more visible */}
-                <div className="absolute inset-0 rounded-full border-4 border-dashed border-cyan-400/60 animate-spin-slow"></div>
-                
-                {/* Second rotating ring - opposite direction */}
-                <div className="absolute inset-12 rounded-full border-2 border-dotted border-purple-400/40 animate-spin-slow-reverse"></div>
+
+                {/* Floating accent dots */}
+                {[
+                  { top: '-6%', right: '-6%', size: 14, color: '#00d8ff', delay: '0s' },
+                  { bottom: '-4%', left: '-4%', size: 11, color: '#00b8e0', delay: '0.5s' },
+                  { top: '50%', right: '-8%', size: 7,  color: '#a855f7', delay: '1s' },
+                  { top: '20%', left: '-7%', size: 9,   color: '#818cf8', delay: '1.5s' },
+                ].map((d, i) => (
+                  <span key={i} className="absolute rounded-full animate-pulse pointer-events-none"
+                    style={{
+                      top: d.top, bottom: d.bottom, left: d.left, right: d.right,
+                      width: d.size, height: d.size,
+                      background: d.color, filter: 'blur(3px)',
+                      animationDelay: d.delay,
+                      boxShadow: `0 0 10px ${d.color}`,
+                    }} />
+                ))}
               </div>
             </div>
+
           </div>
-          
+
+          {/* Scroll indicator */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '9px', color: '#475569', letterSpacing: '0.15em' }}>SCROLL</span>
+            <div style={{ width: 1, height: 32, background: 'linear-gradient(to bottom, #00d8ff, transparent)' }} />
+          </div>
         </div>
-        
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
-          <span className="font-['JetBrains_Mono',monospace] text-[10px] text-gray-500 uppercase tracking-wider">Scroll</span>
-          <div className="w-0.5 h-8 bg-linear-to-b from-cyan-400 to-transparent"></div>
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 
