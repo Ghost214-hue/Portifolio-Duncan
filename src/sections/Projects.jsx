@@ -77,9 +77,9 @@ const projects = [
       "Integrated contact & inquiry forms",
       "Deployed & live at finlandproperties.co.ke",
     ],
-    tech: ["React", "Node.js", "Express", "PostgreSQL", "TailwindCSS", "Vite"],
+    tech: ["React", "Node.js" ,"sanity CMS","TailwindCSS", "Vite"],
     github: "https://github.com/Ghost214-hue/FInland-Properties.git",
-    live: "https://finlandproperties.co.ke",
+    live: "https://finelandproperties.co.ke",
   },
   {
     id: 4,
